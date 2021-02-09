@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const pkg = require('../package.json');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const bannerPack = new webpack.BannerPlugin({
   banner: [
@@ -72,11 +72,11 @@ const svgRules = {
   ],
 };
 
-const stylRules = {
-  test: /\.styl$/,
-  include: [path.resolve(__dirname, '../assets')],
-  use: [MiniCssExtractPlugin.loader, 'css-loader', 'stylus-loader'],
-};
+// const stylRules = {
+//   test: /\.styl$/,
+//   include: [path.resolve(__dirname, '../assets')],
+//   use: [MiniCssExtractPlugin.loader, 'css-loader', 'stylus-loader'],
+// };
 
 const tsRules = {
   test: /\.ts$/,
