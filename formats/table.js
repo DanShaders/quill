@@ -70,7 +70,7 @@ class TableRow extends Container {
 
   optimize(...args) {
     super.optimize(...args);
-    this.children.forEach(child => {
+    this.children.forEach((child) => {
       if (child.next == null) return;
       const childFormats = child.formats();
       const nextFormats = child.next.formats();
@@ -111,7 +111,7 @@ class TableContainer extends Container {
     const maxColumns = rows.reduce((max, row) => {
       return Math.max(row.children.length, max);
     }, 0);
-    rows.forEach(row => {
+    rows.forEach((row) => {
       new Array(maxColumns - row.children.length).fill(0).forEach(() => {
         let value;
         if (row.children.head != null) {
@@ -125,13 +125,13 @@ class TableContainer extends Container {
   }
 
   cells(column) {
-    return this.rows().map(row => row.children.at(column));
+    return this.rows().map((row) => row.children.at(column));
   }
 
   deleteColumn(index) {
     const [body] = this.descendant(TableBody);
     if (body == null || body.children.head == null) return;
-    body.children.forEach(row => {
+    body.children.forEach((row) => {
       const cell = row.children.at(index);
       if (cell != null) {
         cell.remove();
@@ -142,7 +142,7 @@ class TableContainer extends Container {
   insertColumn(index) {
     const [body] = this.descendant(TableBody);
     if (body == null || body.children.head == null) return;
-    body.children.forEach(row => {
+    body.children.forEach((row) => {
       const ref = row.children.at(index);
       const value = TableCell.formats(row.children.head.domNode);
       const cell = this.scroll.create(TableCell.blotName, value);
@@ -166,7 +166,7 @@ class TableContainer extends Container {
   rows() {
     const body = this.children.head;
     if (body == null) return [];
-    return body.children.map(row => row);
+    return body.children.map((row) => row);
   }
 }
 TableContainer.blotName = 'table-container';
@@ -182,9 +182,7 @@ TableRow.allowedChildren = [TableCell];
 TableCell.requiredContainer = TableRow;
 
 function tableId() {
-  const id = Math.random()
-    .toString(36)
-    .slice(2, 6);
+  const id = Math.random().toString(36).slice(2, 6);
   return `row-${id}`;
 }
 

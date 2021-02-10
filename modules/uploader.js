@@ -5,7 +5,7 @@ import Module from '../core/module';
 class Uploader extends Module {
   constructor(quill, options) {
     super(quill, options);
-    quill.root.addEventListener('drop', e => {
+    quill.root.addEventListener('drop', (e) => {
       e.preventDefault();
       let native;
       if (document.caretRangeFromPoint) {
@@ -26,7 +26,7 @@ class Uploader extends Module {
 
   upload(range, files) {
     const uploads = [];
-    Array.from(files).forEach(file => {
+    Array.from(files).forEach((file) => {
       if (file && this.options.mimetypes.includes(file.type)) {
         uploads.push(file);
       }
@@ -40,16 +40,16 @@ class Uploader extends Module {
 Uploader.DEFAULTS = {
   mimetypes: ['image/png', 'image/jpeg'],
   handler(range, files) {
-    const promises = files.map(file => {
-      return new Promise(resolve => {
+    const promises = files.map((file) => {
+      return new Promise((resolve) => {
         const reader = new FileReader();
-        reader.onload = e => {
+        reader.onload = (e) => {
           resolve(e.target.result);
         };
         reader.readAsDataURL(file);
       });
     });
-    Promise.all(promises).then(images => {
+    Promise.all(promises).then((images) => {
       const update = images.reduce((delta, image) => {
         return delta.insert({ image });
       }, new Delta().retain(range.index).delete(range.length));

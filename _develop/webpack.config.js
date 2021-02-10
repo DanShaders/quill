@@ -72,11 +72,23 @@ const svgRules = {
   ],
 };
 
-// const stylRules = {
-//   test: /\.styl$/,
-//   include: [path.resolve(__dirname, '../assets')],
-//   use: [MiniCssExtractPlugin.loader, 'css-loader', 'stylus-loader'],
-// };
+const htmlRules = {
+  test: /\.html$/,
+  use: [
+    {
+      loader: 'file-loader',
+      options: {
+        name: '[name].[ext]',
+      },
+    },
+  ],
+};
+
+const stylRules = {
+  test: /\.styl$/,
+  include: [path.resolve(__dirname, '../assets')],
+  use: [MiniCssExtractPlugin.loader, 'css-loader', 'stylus-loader'],
+};
 
 const tsRules = {
   test: /\.ts$/,
@@ -100,10 +112,11 @@ const baseConfig = {
   mode: 'development',
   context: path.resolve(__dirname, '..'),
   entry: {
-    'quill.js': ['./quill.js'],
-    'quill.core.js': ['./core.js'],
-    'quill.core': './assets/core.styl',
-    'quill.bubble': './assets/bubble.styl',
+    'quill.js': './quill.js',
+    // 'quill.core.js': ['./core.js'],
+    // 'quill.core': './assets/core.styl',
+    // 'quill.bubble': './assets/bubble.styl',
+    'html': './assets/standalone.html',
     'quill.snow': './assets/snow.styl',
     'unit.js': './test/unit.js',
   },
@@ -124,7 +137,7 @@ const baseConfig = {
     extensions: ['.js', '.styl', '.ts'],
   },
   module: {
-    rules: [jsRules, stylRules, svgRules, tsRules],
+    rules: [jsRules, stylRules, svgRules, htmlRules, tsRules],
     noParse: [
       /\/node_modules\/clone\/clone\.js$/,
       /\/node_modules\/eventemitter3\/index\.js$/,
@@ -141,6 +154,7 @@ const baseConfig = {
   devServer: {
     contentBase: path.resolve(__dirname, '../dist'),
     hot: false,
+    host: '0.0.0.0',
     port: process.env.npm_package_config_ports_webpack,
     stats: 'minimal',
     disableHostCheck: true,
@@ -153,7 +167,10 @@ module.exports = env => {
     return {
       ...prodConfig,
       mode: 'production',
-      entry: { 'quill.min.js': './quill.js' },
+      entry: {
+        'quill.min.js': './quill.js',
+        'quill.snow': './assets/snow.styl',
+      },
       devtool: 'source-map',
     };
   }

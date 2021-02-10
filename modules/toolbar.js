@@ -25,11 +25,11 @@ class Toolbar extends Module {
     this.container.classList.add('ql-toolbar');
     this.controls = [];
     this.handlers = {};
-    Object.keys(this.options.handlers).forEach(format => {
+    Object.keys(this.options.handlers).forEach((format) => {
       this.addHandler(format, this.options.handlers[format]);
     });
     Array.from(this.container.querySelectorAll('button, select')).forEach(
-      input => {
+      (input) => {
         this.attach(input);
       },
     );
@@ -49,7 +49,7 @@ class Toolbar extends Module {
   }
 
   attach(input) {
-    let format = Array.from(input.classList).find(className => {
+    let format = Array.from(input.classList).find((className) => {
       return className.indexOf('ql-') === 0;
     });
     if (!format) return;
@@ -65,7 +65,7 @@ class Toolbar extends Module {
       return;
     }
     const eventName = input.tagName === 'SELECT' ? 'change' : 'click';
-    input.addEventListener(eventName, e => {
+    input.addEventListener(eventName, (e) => {
       let value;
       if (input.tagName === 'SELECT') {
         if (input.selectedIndex < 0) return;
@@ -109,7 +109,7 @@ class Toolbar extends Module {
 
   update(range) {
     const formats = range == null ? {} : this.quill.getFormat(range);
-    this.controls.forEach(pair => {
+    this.controls.forEach((pair) => {
       const [format, input] = pair;
       if (input.tagName === 'SELECT') {
         let option;
@@ -163,10 +163,10 @@ function addControls(container, groups) {
   if (!Array.isArray(groups[0])) {
     groups = [groups];
   }
-  groups.forEach(controls => {
+  groups.forEach((controls) => {
     const group = document.createElement('span');
     group.classList.add('ql-formats');
-    controls.forEach(control => {
+    controls.forEach((control) => {
       if (typeof control === 'string') {
         addButton(group, control);
       } else {
@@ -186,7 +186,7 @@ function addControls(container, groups) {
 function addSelect(container, format, values) {
   const input = document.createElement('select');
   input.classList.add(`ql-${format}`);
-  values.forEach(value => {
+  values.forEach((value) => {
     const option = document.createElement('option');
     if (value !== false) {
       option.setAttribute('value', value);
@@ -206,7 +206,7 @@ Toolbar.DEFAULTS = {
       if (range == null) return;
       if (range.length === 0) {
         const formats = this.quill.getFormat();
-        Object.keys(formats).forEach(name => {
+        Object.keys(formats).forEach((name) => {
           // Clean functionality in existing apps only clean inline formats
           if (this.quill.scroll.query(name, Scope.INLINE) != null) {
             this.quill.format(name, false, Quill.sources.USER);

@@ -108,4 +108,7 @@ Quill.register(
   true,
 );
 
+console.log("here");
+window.quill = Quill;
+
 export default Quill;

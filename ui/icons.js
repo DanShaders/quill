@@ -48,8 +48,8 @@ export default {
   },
   formula: formulaIcon,
   header: {
-    '1': headerIcon,
-    '2': header2Icon,
+    1: headerIcon,
+    2: header2Icon,
   },
   italic: italicIcon,
   image: imageIcon,

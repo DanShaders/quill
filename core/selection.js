@@ -204,7 +204,7 @@ class Selection {
     if (!range.native.collapsed) {
       positions.push([range.end.node, range.end.offset]);
     }
-    const indexes = positions.map(position => {
+    const indexes = positions.map((position) => {
       const [node, offset] = position;
       const blot = this.scroll.find(node, true);
       const index = blot.offset(this.scroll);
@@ -236,7 +236,7 @@ class Selection {
       end: { node: nativeRange.endContainer, offset: nativeRange.endOffset },
       native: nativeRange,
     };
-    [range.start, range.end].forEach(position => {
+    [range.start, range.end].forEach((position) => {
       let { node, offset } = position;
       while (!(node instanceof Text) && node.childNodes.length > 0) {
         if (node.childNodes.length > offset) {

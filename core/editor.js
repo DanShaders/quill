@@ -55,7 +55,7 @@ class Editor {
         }
         scrollLength += length;
       }
-      Object.keys(attributes).forEach(name => {
+      Object.keys(attributes).forEach((name) => {
         this.scroll.formatAt(index, length, name, attributes[name]);
       });
       return index + length;
@@ -79,8 +79,8 @@ class Editor {
 
   formatLine(index, length, formats = {}) {
     this.scroll.update();
-    Object.keys(formats).forEach(format => {
-      this.scroll.lines(index, Math.max(length, 1)).forEach(line => {
+    Object.keys(formats).forEach((format) => {
+      this.scroll.lines(index, Math.max(length, 1)).forEach((line) => {
         line.format(format, formats[format]);
       });
     });
@@ -90,7 +90,7 @@ class Editor {
   }
 
   formatText(index, length, formats = {}) {
-    Object.keys(formats).forEach(format => {
+    Object.keys(formats).forEach((format) => {
       this.scroll.formatAt(index, length, format, formats[format]);
     });
     const delta = new Delta().retain(index).retain(length, cloneDeep(formats));
@@ -111,7 +111,7 @@ class Editor {
     let lines = [];
     let leaves = [];
     if (length === 0) {
-      this.scroll.path(index).forEach(path => {
+      this.scroll.path(index).forEach((path) => {
         const [blot] = path;
         if (blot instanceof Block) {
           lines.push(blot);
@@ -123,7 +123,7 @@ class Editor {
       lines = this.scroll.lines(index, length);
       leaves = this.scroll.descendants(LeafBlot, index, length);
     }
-    [lines, leaves] = [lines, leaves].map(blots => {
+    [lines, leaves] = [lines, leaves].map((blots) => {
       if (blots.length === 0) return {};
       let formats = bubbleFormats(blots.shift());
       while (Object.keys(formats).length > 0) {
@@ -146,8 +146,8 @@ class Editor {
 
   getText(index, length) {
     return this.getContents(index, length)
-      .filter(op => typeof op.insert === 'string')
-      .map(op => op.insert)
+      .filter((op) => typeof op.insert === 'string')
+      .map((op) => op.insert)
       .join('');
   }
 
@@ -159,7 +159,7 @@ class Editor {
   insertText(index, text, formats = {}) {
     text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
     this.scroll.insertAt(index, text);
-    Object.keys(formats).forEach(format => {
+    Object.keys(formats).forEach((format) => {
       this.scroll.formatAt(index, text.length, format, formats[format]);
     });
     return this.update(

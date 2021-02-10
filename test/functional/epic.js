@@ -10,24 +10,25 @@ const P1 =
 const P2 =
   'There now is your insular city of the Manhattoes, belted round by wharves as Indian isles by coral reefs—commerce surrounds it with her surf. Right and left, the streets take you waterward. Its extreme downtown is the battery, where that noble mole is washed by waves, and cooled by breezes, which a few hours previous were out of sight of land. Look at the crowds of water-gazers there.';
 
-describe('quill', function() {
-  it('compose an epic', async function() {
+describe('quill', function () {
+  it('compose an epic', async function () {
     const browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
+      executablePath: '/usr/bin/chromium',
     });
     const page = await browser.newPage();
 
-    await page.goto('http://localhost:9000/standalone/full/');
-    await page.waitForSelector('.ql-editor', { timeout: 10000 });
+    await page.goto('http://localhost:9000/standalone.html');
+    await page.waitForSelector('.ql-editor', { timeout: 20000 });
     const title = await page.title();
     expect(title).toEqual('Full Editor - Quill Rich Text Editor');
 
     await page.type('.ql-editor', 'The Whale');
-    let html = await page.$eval('.ql-editor', e => e.innerHTML);
+    let html = await page.$eval('.ql-editor', (e) => e.innerHTML);
     expect(html).toEqual('<p>The Whale</p>');
 
     await page.keyboard.press('Enter');
-    html = await page.$eval('.ql-editor', e => e.innerHTML);
+    html = await page.$eval('.ql-editor', (e) => e.innerHTML);
     expect(html).toEqual('<p>The Whale</p><p><br></p>');
 
     await page.keyboard.press('Enter');
@@ -36,7 +37,7 @@ describe('quill', function() {
     await page.keyboard.press('Enter');
     await page.keyboard.press('Enter');
     await page.type('.ql-editor', P2);
-    html = await page.$eval('.ql-editor', e => e.innerHTML);
+    html = await page.$eval('.ql-editor', (e) => e.innerHTML);
     expect(html).toEqual(
       [
         '<p>The Whale</p>',
@@ -57,7 +58,7 @@ describe('quill', function() {
     await page.keyboard.press('Enter');
     await page.type('.ql-editor', CHAPTER);
     await page.keyboard.press('Enter');
-    html = await page.$eval('.ql-editor', e => e.innerHTML);
+    html = await page.$eval('.ql-editor', (e) => e.innerHTML);
     expect(html).toEqual(
       [
         '<p>The Whale</p>',
@@ -84,7 +85,7 @@ describe('quill', function() {
     await page.keyboard.press('Backspace');
     await page.keyboard.press('Backspace');
     await page.keyboard.press('Backspace');
-    html = await page.$eval('.ql-editor', e => e.innerHTML);
+    html = await page.$eval('.ql-editor', (e) => e.innerHTML);
     expect(html).toEqual(
       [
         '<p>Whale</p>',
@@ -102,7 +103,7 @@ describe('quill', function() {
     await page.keyboard.press('Delete');
     await page.keyboard.press('Delete');
     await page.keyboard.press('Delete');
-    html = await page.$eval('.ql-editor', e => e.innerHTML);
+    html = await page.$eval('.ql-editor', (e) => e.innerHTML);
     expect(html).toEqual(
       [
         '<p><br></p>',
@@ -116,7 +117,7 @@ describe('quill', function() {
     );
 
     await page.keyboard.press('Delete');
-    html = await page.$eval('.ql-editor', e => e.innerHTML);
+    html = await page.$eval('.ql-editor', (e) => e.innerHTML);
     expect(html).toEqual(
       [
         '<p><br></p>',
@@ -130,7 +131,7 @@ describe('quill', function() {
 
     await page.click('.ql-toolbar .ql-bold');
     await page.click('.ql-toolbar .ql-italic');
-    html = await page.$eval('.ql-editor', e => e.innerHTML);
+    html = await page.$eval('.ql-editor', (e) => e.innerHTML);
     expect(html).toEqual(
       [
         '<p><strong><em><span class="ql-cursor">\uFEFF</span></em></strong></p>',
@@ -147,7 +148,7 @@ describe('quill', function() {
     expect(italic).not.toBe(null);
 
     await page.type('.ql-editor', 'Moby Dick');
-    html = await page.$eval('.ql-editor', e => e.innerHTML);
+    html = await page.$eval('.ql-editor', (e) => e.innerHTML);
     expect(html).toEqual(
       [
         '<p><strong><em>Moby Dick</em></strong></p>',
@@ -181,7 +182,7 @@ describe('quill', function() {
     await page.keyboard.up(SHORTKEY);
     bold = await page.$('.ql-toolbar .ql-bold.ql-active');
     expect(bold).not.toBe(null);
-    html = await page.$eval('.ql-editor', e => e.innerHTML);
+    html = await page.$eval('.ql-editor', (e) => e.innerHTML);
     expect(html).toEqual(
       [
         '<p><strong><em>Moby Dick</em></strong></p>',
@@ -196,7 +197,7 @@ describe('quill', function() {
     await page.keyboard.press('ArrowLeft');
     await page.keyboard.press('ArrowUp');
     await page.click('.ql-toolbar .ql-header[value="1"]');
-    html = await page.$eval('.ql-editor', e => e.innerHTML);
+    html = await page.$eval('.ql-editor', (e) => e.innerHTML);
     expect(html).toEqual(
       [
         '<h1><strong><em>Moby Dick</em></strong></h1>',
@@ -222,7 +223,7 @@ describe('quill', function() {
     await page.keyboard.press('b');
     await page.keyboard.up(SHORTKEY);
     await page.type('.ql-editor', 'B');
-    html = await page.$$eval('.ql-editor p', paras => paras[2].innerHTML);
+    html = await page.$$eval('.ql-editor p', (paras) => paras[2].innerHTML);
     expect(html).toBe('ABA');
     await page.keyboard.down(SHORTKEY);
     await page.keyboard.press('b');
@@ -232,7 +233,7 @@ describe('quill', function() {
     await page.keyboard.press('b');
     await page.keyboard.up(SHORTKEY);
     await page.type('.ql-editor', 'D');
-    html = await page.$$eval('.ql-editor p', paras => paras[2].innerHTML);
+    html = await page.$$eval('.ql-editor p', (paras) => paras[2].innerHTML);
     expect(html).toBe('AB<strong>C</strong>DA');
     const selection = await page.evaluate(getSelectionInTextNode);
     expect(selection).toBe('["DA",1,"DA",1]');

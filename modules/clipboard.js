@@ -64,8 +64,10 @@ const STYLE_ATTRIBUTORS = [
 class Clipboard extends Module {
   constructor(quill, options) {
     super(quill, options);
-    this.quill.root.addEventListener('copy', e => this.onCaptureCopy(e, false));
-    this.quill.root.addEventListener('cut', e => this.onCaptureCopy(e, true));
+    this.quill.root.addEventListener('copy', (e) =>
+      this.onCaptureCopy(e, false),
+    );
+    this.quill.root.addEventListener('cut', (e) => this.onCaptureCopy(e, true));
     this.quill.root.addEventListener('paste', this.onCapturePaste.bind(this));
     this.matchers = [];
     CLIPBOARD_CONFIG.concat(this.options.matchers).forEach(
@@ -181,7 +183,7 @@ class Clipboard extends Module {
   prepareMatching(container, nodeMatches) {
     const elementMatchers = [];
     const textMatchers = [];
-    this.matchers.forEach(pair => {
+    this.matchers.forEach((pair) => {
       const [selector, matcher] = pair;
       switch (selector) {
         case Node.TEXT_NODE:
@@ -191,7 +193,7 @@ class Clipboard extends Module {
           elementMatchers.push(matcher);
           break;
         default:
-          Array.from(container.querySelectorAll(selector)).forEach(node => {
+          Array.from(container.querySelectorAll(selector)).forEach((node) => {
             if (nodeMatches.has(node)) {
               const matches = nodeMatches.get(node);
               matches.push(matcher);
@@ -336,7 +338,7 @@ function matchAttributor(node, delta, scroll) {
   attributes
     .concat(classes)
     .concat(styles)
-    .forEach(name => {
+    .forEach((name) => {
       let attr = scroll.query(name, Scope.ATTRIBUTE);
       if (attr != null) {
         formats[attr.attrName] = attr.value(node);

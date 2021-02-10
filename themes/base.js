@@ -55,7 +55,7 @@ const SIZES = ['small', false, 'large', 'huge'];
 class BaseTheme extends Theme {
   constructor(quill, options) {
     super(quill, options);
-    const listener = e => {
+    const listener = (e) => {
       if (!document.body.contains(quill.root)) {
         document.body.removeEventListener('click', listener);
         return;
@@ -69,7 +69,7 @@ class BaseTheme extends Theme {
         this.tooltip.hide();
       }
       if (this.pickers != null) {
-        this.pickers.forEach(picker => {
+        this.pickers.forEach((picker) => {
           if (!picker.container.contains(e.target)) {
             picker.close();
           }
@@ -88,9 +88,9 @@ class BaseTheme extends Theme {
   }
 
   buildButtons(buttons, icons) {
-    Array.from(buttons).forEach(button => {
+    Array.from(buttons).forEach((button) => {
       const className = button.getAttribute('class') || '';
-      className.split(/\s+/).forEach(name => {
+      className.split(/\s+/).forEach((name) => {
         if (!name.startsWith('ql-')) return;
         name = name.slice('ql-'.length);
         if (icons[name] == null) return;
@@ -109,7 +109,7 @@ class BaseTheme extends Theme {
   }
 
   buildPickers(selects, icons) {
-    this.pickers = Array.from(selects).map(select => {
+    this.pickers = Array.from(selects).map((select) => {
       if (select.classList.contains('ql-align')) {
         if (select.querySelector('option') == null) {
           fillSelect(select, ALIGNS);
@@ -144,7 +144,7 @@ class BaseTheme extends Theme {
       return new Picker(select);
     });
     const update = () => {
-      this.pickers.forEach(picker => {
+      this.pickers.forEach((picker) => {
         picker.update();
       });
     };
@@ -195,7 +195,7 @@ class BaseTooltip extends Tooltip {
   }
 
   listen() {
-    this.textbox.addEventListener('keydown', event => {
+    this.textbox.addEventListener('keydown', (event) => {
       if (event.key === 'Enter') {
         this.save();
         event.preventDefault();
@@ -300,7 +300,7 @@ function extractVideoUrl(url) {
 }
 
 function fillSelect(select, values, defaultValue = false) {
-  values.forEach(value => {
+  values.forEach((value) => {
     const option = document.createElement('option');
     if (value === defaultValue) {
       option.setAttribute('selected', 'selected');

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Full Editor - Quill Rich Text Editor</title>
+  <meta charset="utf-8">
+
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/styles/default.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+  <link rel="stylesheet" href="quill.snow.css" />
+  
+  <script defer src="//cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"></script>
+  <script defer src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/highlight.min.js"></script>
+</head>
+
+<body>
+  <div id="standalone-container">
+    <div id="toolbar-container">
+      <span class="ql-formats">
+        <select class="ql-header"></select>
+        <select class="ql-font"></select>
+        <select class="ql-size"></select>
+      </span>
+      <span class="ql-formats">
+        <button class="ql-bold"></button>
+        <button class="ql-italic"></button>
+        <button class="ql-underline"></button>
+        <button class="ql-strike"></button>
+      </span>
+      <span class="ql-formats">
+        <select class="ql-align"></select>
+      </span>
+      <span class="ql-formats">
+        <select class="ql-color"></select>
+        <select class="ql-background"></select>
+      </span>
+      <span class="ql-formats">
+        <button class="ql-list" value="ordered"></button>
+        <button class="ql-list" value="bullet"></button>
+        <button class="ql-indent" value="-1"></button>
+        <button class="ql-indent" value="+1"></button>
+      </span>
+      <span class="ql-formats">
+        <button class="ql-image"></button>
+        <button class="ql-code"></button>
+        <button class="ql-code-block"></button>
+        <button class="ql-formula"></button>
+        <button class="ql-link"></button>
+      </span>
+      <span class="ql-formats">
+        <button class="ql-clean"></button>
+      </span>
+    </div>
+    <div id="editor-container"></div>
+  </div>
+
+  <script>
+    var editor;
+
+    function onLoad() {
+      editor = new window.quill('#editor-container', {
+        modules: {
+          syntax: true,
+          toolbar: '#toolbar-container'
+        },
+        placeholder: 'Compose an epic...',
+        theme: 'snow'
+      });
+    }
+  </script>
+  <script defer src="quill.js" onload="onLoad()"></script>
+</body>
+</html>

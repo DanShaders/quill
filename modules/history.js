@@ -34,7 +34,7 @@ class History extends Module {
       );
     }
 
-    this.quill.root.addEventListener('beforeinput', event => {
+    this.quill.root.addEventListener('beforeinput', (event) => {
       if (event.inputType === 'historyUndo') {
         this.undo();
         event.preventDefault();
@@ -126,7 +126,7 @@ function endsWithNewlineChange(scroll, delta) {
     return typeof lastOp.insert === 'string' && lastOp.insert.endsWith('\n');
   }
   if (lastOp.attributes != null) {
-    return Object.keys(lastOp.attributes).some(attr => {
+    return Object.keys(lastOp.attributes).some((attr) => {
       return scroll.query(attr, Scope.BLOCK) != null;
     });
   }

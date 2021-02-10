@@ -13,7 +13,7 @@ const SHORTKEY = /Mac/i.test(navigator.platform) ? 'metaKey' : 'ctrlKey';
 class Keyboard extends Module {
   static match(evt, binding) {
     if (
-      ['altKey', 'ctrlKey', 'metaKey', 'shiftKey'].some(key => {
+      ['altKey', 'ctrlKey', 'metaKey', 'shiftKey'].some((key) => {
         return !!binding[key] !== evt[key] && binding[key] !== null;
       })
     ) {
@@ -25,7 +25,7 @@ class Keyboard extends Module {
   constructor(quill, options) {
     super(quill, options);
     this.bindings = {};
-    Object.keys(this.options.bindings).forEach(name => {
+    Object.keys(this.options.bindings).forEach((name) => {
       if (this.options.bindings[name]) {
         this.addBinding(this.options.bindings[name]);
       }
@@ -96,7 +96,7 @@ class Keyboard extends Module {
       handler = { handler };
     }
     const keys = Array.isArray(binding.key) ? binding.key : [binding.key];
-    keys.forEach(key => {
+    keys.forEach((key) => {
       const singleBinding = {
         ...binding,
         key,
@@ -109,12 +109,14 @@ class Keyboard extends Module {
   }
 
   listen() {
-    this.quill.root.addEventListener('keydown', evt => {
+    this.quill.root.addEventListener('keydown', (evt) => {
       if (evt.defaultPrevented || evt.isComposing) return;
       const bindings = (this.bindings[evt.key] || []).concat(
         this.bindings[evt.which] || [],
       );
-      const matches = bindings.filter(binding => Keyboard.match(evt, binding));
+      const matches = bindings.filter((binding) =>
+        Keyboard.match(evt, binding),
+      );
       if (matches.length === 0) return;
       const range = this.quill.getSelection();
       if (range == null || !this.quill.hasFocus()) return;
@@ -140,7 +142,7 @@ class Keyboard extends Module {
         suffix: suffixText,
         event: evt,
       };
-      const prevented = matches.some(binding => {
+      const prevented = matches.some((binding) => {
         if (
           binding.collapsed != null &&
           binding.collapsed !== curContext.collapsed
@@ -155,13 +157,13 @@ class Keyboard extends Module {
         }
         if (Array.isArray(binding.format)) {
           // any format is present
-          if (binding.format.every(name => curContext.format[name] == null)) {
+          if (binding.format.every((name) => curContext.format[name] == null)) {
             return false;
           }
         } else if (typeof binding.format === 'object') {
           // all formats must match
           if (
-            !Object.keys(binding.format).every(name => {
+            !Object.keys(binding.format).every((name) => {
               if (binding.format[name] === true)
                 return curContext.format[name] != null;
               if (binding.format[name] === false)
@@ -269,7 +271,7 @@ class Keyboard extends Module {
     this.quill.setSelection(range.index + 1, Quill.sources.SILENT);
     this.quill.focus();
 
-    Object.keys(context.format).forEach(name => {
+    Object.keys(context.format).forEach((name) => {
       if (lineFormats[name] != null) return;
       if (Array.isArray(context.format[name])) return;
       if (name === 'code' || name === 'link') return;

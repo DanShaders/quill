@@ -24,7 +24,7 @@ class ListItem extends Block {
   constructor(scroll, domNode) {
     super(scroll, domNode);
     const ui = domNode.ownerDocument.createElement('span');
-    const listEventHandler = e => {
+    const listEventHandler = (e) => {
       if (!scroll.isEnabled()) return;
       const format = this.statics.formats(domNode, scroll);
       if (format === 'checked') {

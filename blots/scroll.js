@@ -15,7 +15,7 @@ class Scroll extends ScrollBlot {
     this.batch = false;
     this.optimize();
     this.enable();
-    this.domNode.addEventListener('dragstart', e => this.handleDragStart(e));
+    this.domNode.addEventListener('dragstart', (e) => this.handleDragStart(e));
   }
 
   batchStart() {

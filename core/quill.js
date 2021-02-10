@@ -41,7 +41,7 @@ class Quill {
         // register(Blot | Attributor, overwrite)
         this.register(`formats/${name}`, path, target);
       } else {
-        Object.keys(path).forEach(key => {
+        Object.keys(path).forEach((key) => {
           this.register(key, path[key], target);
         });
       }
@@ -93,7 +93,7 @@ class Quill {
     this.history = this.theme.addModule('history');
     this.uploader = this.theme.addModule('uploader');
     this.theme.init();
-    this.emitter.on(Emitter.events.EDITOR_CHANGE, type => {
+    this.emitter.on(Emitter.events.EDITOR_CHANGE, (type) => {
       if (type === Emitter.events.TEXT_CHANGE) {
         this.root.classList.toggle('ql-blank', this.editor.isBlank());
       }
@@ -476,9 +476,9 @@ function expandConfig(container, userConfig) {
     }
   }
   const themeConfig = cloneDeep(userConfig.theme.DEFAULTS);
-  [themeConfig, userConfig].forEach(config => {
+  [themeConfig, userConfig].forEach((config) => {
     config.modules = config.modules || {};
-    Object.keys(config.modules).forEach(module => {
+    Object.keys(config.modules).forEach((module) => {
       if (config.modules[module] === true) {
         config.modules[module] = {};
       }
@@ -515,7 +515,7 @@ function expandConfig(container, userConfig) {
     themeConfig,
     userConfig,
   );
-  ['bounds', 'container', 'scrollingContainer'].forEach(key => {
+  ['bounds', 'container', 'scrollingContainer'].forEach((key) => {
     if (typeof userConfig[key] === 'string') {
       userConfig[key] = document.querySelector(userConfig[key]);
     }
@@ -607,11 +607,11 @@ function shiftRange(range, index, length, source) {
   let start;
   let end;
   if (index instanceof Delta) {
-    [start, end] = [range.index, range.index + range.length].map(pos =>
+    [start, end] = [range.index, range.index + range.length].map((pos) =>
       index.transformPosition(pos, source !== Emitter.sources.USER),
     );
   } else {
-    [start, end] = [range.index, range.index + range.length].map(pos => {
+    [start, end] = [range.index, range.index + range.length].map((pos) => {
       if (pos < index || (pos === index && source === Emitter.sources.USER))
         return pos;
       if (length >= 0) {
