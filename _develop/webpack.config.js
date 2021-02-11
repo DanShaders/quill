@@ -3,15 +3,6 @@ const webpack = require('webpack');
 const pkg = require('../package.json');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const bannerPack = new webpack.BannerPlugin({
-  banner: [
-    `Quill Editor v${pkg.version}`,
-    'https://quilljs.com/',
-    'Copyright (c) 2014, Jason Chen',
-    'Copyright (c) 2013, salesforce.com',
-  ].join('\n'),
-  entryOnly: true,
-});
 const constantPack = new webpack.DefinePlugin({
   QUILL_VERSION: JSON.stringify(pkg.version),
 });
@@ -108,6 +99,34 @@ const tsRules = {
   ],
 };
 
+const cssRules = {
+  test: /\.css$/,
+  use: [
+    {
+      loader: MiniCssExtractPlugin.loader,
+      options: {
+        publicPath: '',
+      },
+    },
+    {
+      loader: 'css-loader',
+    },
+  ],
+};
+
+const fontRules = {
+  test: /\.(woff(2)?|ttf)$/,
+  use: [
+    {
+      loader: 'file-loader',
+      options: {
+        name: '[name].[ext]',
+        outputPath: 'fonts/',
+      },
+    },
+  ],
+};
+
 const baseConfig = {
   mode: 'development',
   context: path.resolve(__dirname, '..'),
@@ -119,6 +138,7 @@ const baseConfig = {
     'html': './assets/standalone.html',
     'quill.snow': './assets/snow.styl',
     'unit.js': './test/unit.js',
+    'katex.min': './node_modules/katex/dist/katex.min.css',
   },
   output: {
     filename: '[name]',
@@ -137,7 +157,7 @@ const baseConfig = {
     extensions: ['.js', '.styl', '.ts'],
   },
   module: {
-    rules: [jsRules, stylRules, svgRules, htmlRules, tsRules],
+    rules: [jsRules, stylRules, svgRules, htmlRules, tsRules, cssRules, fontRules],
     noParse: [
       /\/node_modules\/clone\/clone\.js$/,
       /\/node_modules\/eventemitter3\/index\.js$/,
@@ -145,7 +165,6 @@ const baseConfig = {
     ],
   },
   plugins: [
-    bannerPack,
     constantPack,
     new MiniCssExtractPlugin({
       filename: '[name].css',
@@ -170,6 +189,7 @@ module.exports = env => {
       entry: {
         'quill.min.js': './quill.js',
         'quill.snow': './assets/snow.styl',
+        'katex.min': './node_modules/katex/dist/katex.min.css',
       },
       devtool: 'source-map',
     };

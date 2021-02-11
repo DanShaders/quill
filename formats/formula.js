@@ -1,7 +1,8 @@
+import katex from 'katex';
 import Embed from '../blots/embed';
 import Emitter from '../core/emitter';
 
-const FORMULA_MAGIC = 'b64enc=';
+const FORMULA_MAGIC = 'H16YohxG=';
 
 class Formula extends Embed {
   constructor(scroll, node) {
@@ -12,19 +13,19 @@ class Formula extends Embed {
   }
 
   static create(value) {
-    if (window.katex == null) {
-      throw new Error('Formula module requires KaTeX.');
-    }
     if (value.startsWith(FORMULA_MAGIC)) {
       try {
-        value = atob(value.substr(FORMULA_MAGIC.length));
+        value = value
+          .substr(FORMULA_MAGIC.length)
+          .replaceAll('&quot;', '"')
+          .replaceAll('&amp;', '&');
       } catch (e) {
         value = null;
       }
     }
     const node = super.create(value);
     if (typeof value === 'string') {
-      window.katex.render(value, node, {
+      katex.render(value, node, {
         throwOnError: false,
         errorColor: '#f00',
       });
@@ -39,7 +40,9 @@ class Formula extends Embed {
 
   html() {
     let { formula } = this.value();
-    formula = FORMULA_MAGIC + btoa(formula); // need to deal with special chars
+    formula =
+      FORMULA_MAGIC +
+      formula.replaceAll('&', '&amp;').replaceAll('"', '&quot;');
     return `<formula data-value="${formula}"></formula>`;
   }
 }

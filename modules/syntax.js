@@ -174,11 +174,12 @@ class Syntax extends Module {
 
   constructor(quill, options) {
     super(quill, options);
-    if (this.options.hljs == null) {
-      throw new Error(
-        'Syntax module requires highlight.js. Please include the library on the page before Quill.',
-      );
-    }
+    // if (this.options.hljs == null) {
+    //   // return;
+    //   throw new Error(
+    //     'Syntax module requires highlight.js. Please include the library on the page before Quill.',
+    //   );
+    // }
     this.languages = this.options.languages.reduce((memo, { key }) => {
       memo[key] = true;
       return memo;
@@ -192,6 +193,7 @@ class Syntax extends Module {
     this.quill.on(Quill.events.SCROLL_BLOT_MOUNT, (blot) => {
       if (!(blot instanceof SyntaxCodeBlockContainer)) return;
       const select = this.quill.root.ownerDocument.createElement('select');
+      select.classList.add('ql-hidden');
       this.options.languages.forEach(({ key, label }) => {
         const option = select.ownerDocument.createElement('option');
         option.textContent = label;
@@ -290,19 +292,19 @@ Syntax.DEFAULTS = {
   interval: 1000,
   languages: [
     { key: 'plain', label: 'Plain' },
-    { key: 'bash', label: 'Bash' },
-    { key: 'cpp', label: 'C++' },
-    { key: 'cs', label: 'C#' },
-    { key: 'css', label: 'CSS' },
-    { key: 'diff', label: 'Diff' },
-    { key: 'xml', label: 'HTML/XML' },
-    { key: 'java', label: 'Java' },
-    { key: 'javascript', label: 'Javascript' },
-    { key: 'markdown', label: 'Markdown' },
-    { key: 'php', label: 'PHP' },
-    { key: 'python', label: 'Python' },
-    { key: 'ruby', label: 'Ruby' },
-    { key: 'sql', label: 'SQL' },
+    // { key: 'bash', label: 'Bash' },
+    // { key: 'cpp', label: 'C++' },
+    // { key: 'cs', label: 'C#' },
+    // { key: 'css', label: 'CSS' },
+    // { key: 'diff', label: 'Diff' },
+    // { key: 'xml', label: 'HTML/XML' },
+    // { key: 'java', label: 'Java' },
+    // { key: 'javascript', label: 'Javascript' },
+    // { key: 'markdown', label: 'Markdown' },
+    // { key: 'php', label: 'PHP' },
+    // { key: 'python', label: 'Python' },
+    // { key: 'ruby', label: 'Ruby' },
+    // { key: 'sql', label: 'SQL' },
   ],
 };
 
