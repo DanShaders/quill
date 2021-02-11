@@ -2,7 +2,7 @@ import { ClassAttributor, Scope, StyleAttributor } from 'parchment';
 
 const SizeClass = new ClassAttributor('size', 'ql-size', {
   scope: Scope.INLINE,
-  whitelist: ['small', 'large', 'huge'],
+  whitelist: ['x-small', 'small', 'large', 'x-large', 'xx-large'],
 });
 const SizeStyle = new StyleAttributor('size', 'font-size', {
   scope: Scope.INLINE,

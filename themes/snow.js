@@ -2,6 +2,7 @@ import merge from 'lodash.merge';
 import Emitter from '../core/emitter';
 import BaseTheme, { BaseTooltip } from './base';
 import LinkBlot from '../formats/link';
+import Formula from '../formats/formula';
 import { Range } from '../core/selection';
 import icons from '../ui/icons';
 
@@ -15,7 +16,8 @@ const TOOLBAR_CONFIG = [
 class SnowTooltip extends BaseTooltip {
   constructor(quill, bounds) {
     super(quill, bounds);
-    this.preview = this.root.querySelector('a.ql-preview');
+    this.linkPreview = this.root.querySelector('a.ql-link-preview');
+    this.formulaPreview = this.root.querySelector('span.ql-formula-preview');
   }
 
   listen() {
@@ -26,18 +28,29 @@ class SnowTooltip extends BaseTooltip {
         if (this.root.classList.contains('ql-editing')) {
           this.save();
         } else {
-          this.edit('link', this.preview.textContent);
+          const mode = this.root.getAttribute('data-mode');
+          if (mode === 'formula-preview') {
+            this.edit('formula', this.formulaPreview.textContent, 'from-edit');
+          } else {
+            this.edit('link', this.linkPreview.textContent);
+          }
         }
         event.preventDefault();
       });
     this.root
       .querySelector('a.ql-remove')
       .addEventListener('click', (event) => {
-        if (this.linkRange != null) {
-          const range = this.linkRange;
-          this.restoreFocus();
-          this.quill.formatText(range, 'link', false, Emitter.sources.USER);
-          delete this.linkRange;
+        const mode = this.root.getAttribute('data-mode');
+        if (mode === 'link-preview') {
+          if (this.linkRange != null) {
+            const range = this.linkRange;
+            this.restoreFocus();
+            this.quill.formatText(range, 'link', false, Emitter.sources.USER);
+            delete this.linkRange;
+          }
+        } else if (mode === 'formula-preview') {
+          const index = this.quill.getIndex(this.currentBlot);
+          this.quill.deleteText(index, 1, Emitter.sources.USER);
         }
         event.preventDefault();
         this.hide();
@@ -54,8 +67,9 @@ class SnowTooltip extends BaseTooltip {
           if (link != null) {
             this.linkRange = new Range(range.index - offset, link.length());
             const preview = LinkBlot.formats(link.domNode);
-            this.preview.textContent = preview;
-            this.preview.setAttribute('href', preview);
+            this.linkPreview.textContent = preview;
+            this.linkPreview.setAttribute('href', preview);
+            this.root.setAttribute('data-mode', 'link-preview');
             this.show();
             this.position(this.quill.getBounds(this.linkRange));
             return;
@@ -66,15 +80,24 @@ class SnowTooltip extends BaseTooltip {
         this.hide();
       },
     );
+    this.quill.on(Emitter.events.EMBED_CLICK, (event, blot) => {
+      this.currentBlot = blot;
+      if (blot instanceof Formula) {
+        this.formulaPreview.textContent = blot.value().formula;
+        this.root.setAttribute('data-mode', 'formula-preview');
+        this.show();
+        this.position(this.quill.getBounds(this.quill.getIndex(blot)));
+      }
+    });
   }
 
   show() {
     super.show();
-    this.root.removeAttribute('data-mode');
   }
 }
 SnowTooltip.TEMPLATE = [
-  '<a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a>',
+  '<span class="ql-formula-preview"></span>',
+  '<a class="ql-link-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a>',
   '<input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL">',
   '<a class="ql-action"></a>',
   '<a class="ql-remove"></a>',

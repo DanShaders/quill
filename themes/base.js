@@ -50,7 +50,7 @@ const FONTS = [false, 'serif', 'monospace'];
 
 const HEADERS = ['1', '2', '3', false];
 
-const SIZES = ['small', false, 'large', 'huge'];
+const SIZES = ['x-small', 'small', false, 'large', 'x-large', 'xx-large'];
 
 class BaseTheme extends Theme {
   constructor(quill, options) {
@@ -210,7 +210,7 @@ class BaseTooltip extends Tooltip {
     this.hide();
   }
 
-  edit(mode = 'link', preview = null) {
+  edit(mode = 'link', preview = null, ext = '') {
     this.root.classList.remove('ql-hidden');
     this.root.classList.add('ql-editing');
     if (preview != null) {
@@ -224,6 +224,7 @@ class BaseTooltip extends Tooltip {
       'placeholder',
       this.textbox.getAttribute(`data-${mode}`) || '',
     );
+    this.root.setAttribute('data-ext', ext);
     this.root.setAttribute('data-mode', mode);
   }
 
@@ -235,6 +236,7 @@ class BaseTooltip extends Tooltip {
 
   save() {
     let { value } = this.textbox;
+    const ext = this.root.getAttribute('data-ext');
     switch (this.root.getAttribute('data-mode')) {
       case 'link': {
         const { scrollTop } = this.quill.root;
@@ -260,17 +262,29 @@ class BaseTooltip extends Tooltip {
         if (!value) break;
         const range = this.quill.getSelection(true);
         if (range != null) {
-          const index = range.index + range.length;
-          this.quill.insertEmbed(
-            index,
-            this.root.getAttribute('data-mode'),
-            value,
-            Emitter.sources.USER,
-          );
-          if (this.root.getAttribute('data-mode') === 'formula') {
-            this.quill.insertText(index + 1, ' ', Emitter.sources.USER);
+          if (ext === 'from-edit') {
+            const index = this.quill.getIndex(this.currentBlot);
+            this.quill.deleteText(index, 1, Emitter.sources.USER);
+            this.quill.insertEmbed(
+              index,
+              this.root.getAttribute('data-mode'),
+              value,
+              Emitter.sources.USER,
+            );
+            this.quill.setSelection(range.index, Emitter.sources.USER);
+          } else {
+            const index = range.index + range.length;
+            this.quill.insertEmbed(
+              index,
+              this.root.getAttribute('data-mode'),
+              value,
+              Emitter.sources.USER,
+            );
+            if (this.root.getAttribute('data-mode') === 'formula') {
+              this.quill.insertText(index + 1, ' ', Emitter.sources.USER);
+            }
+            this.quill.setSelection(index + 2, Emitter.sources.USER);
           }
-          this.quill.setSelection(index + 2, Emitter.sources.USER);
         }
         break;
       }

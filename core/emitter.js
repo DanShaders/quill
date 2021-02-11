@@ -53,6 +53,7 @@ Emitter.events = {
   SCROLL_UPDATE: 'scroll-update',
   SELECTION_CHANGE: 'selection-change',
   TEXT_CHANGE: 'text-change',
+  EMBED_CLICK: 'embed-click',
 };
 Emitter.sources = {
   API: 'api',

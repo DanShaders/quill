@@ -16,11 +16,6 @@
   <div id="standalone-container">
     <div id="toolbar-container">
       <span class="ql-formats">
-        <select class="ql-header"></select>
-        <select class="ql-font"></select>
-        <select class="ql-size"></select>
-      </span>
-      <span class="ql-formats">
         <button class="ql-bold"></button>
         <button class="ql-italic"></button>
         <button class="ql-underline"></button>
@@ -28,23 +23,21 @@
       </span>
       <span class="ql-formats">
         <select class="ql-align"></select>
+        <select class="ql-size"></select>
       </span>
       <span class="ql-formats">
         <select class="ql-color"></select>
-        <select class="ql-background"></select>
       </span>
       <span class="ql-formats">
-        <button class="ql-list" value="ordered"></button>
-        <button class="ql-list" value="bullet"></button>
-        <button class="ql-indent" value="-1"></button>
-        <button class="ql-indent" value="+1"></button>
+        <button class="ql-script" value="sub"></button>
+        <button class="ql-script" value="super"></button>
+        <button class="ql-blockquote"></button>
+        <button class="ql-code-block"></button>
       </span>
       <span class="ql-formats">
         <button class="ql-image"></button>
-        <button class="ql-code"></button>
-        <button class="ql-code-block"></button>
-        <button class="ql-formula"></button>
         <button class="ql-link"></button>
+        <button class="ql-formula"></button>
       </span>
       <span class="ql-formats">
         <button class="ql-clean"></button>
@@ -60,10 +53,20 @@
       editor = new window.quill('#editor-container', {
         modules: {
           syntax: true,
-          toolbar: '#toolbar-container'
+          toolbar: {
+            container: '#toolbar-container',
+            handlers: {
+              image(value) {
+                const url = prompt("Введите адрес изображения:");
+                if (url === "false")
+                  return false;
+                editor.insertEmbed(editor.getSelection().index, 'image', url);
+              }
+            }
+          },
         },
-        placeholder: 'Compose an epic...',
-        theme: 'snow'
+        placeholder: '',
+        theme: 'snow',
       });
     }
   </script>

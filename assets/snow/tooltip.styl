@@ -9,9 +9,13 @@ tooltipMargin = 8px
     padding: 5px 12px
     white-space: nowrap
     &::before
-      content: "Visit URL:"
       line-height: 26px
       margin-right: tooltipMargin
+      content: "URL:"
+    &[data-mode=formula-preview]::before, &[data-mode=formula]::before
+      content: "Формула:"
+    &[data-mode=link]::before
+      content: "URL:"
     input[type=text]
       display: none
       border: 1px solid borderColor
@@ -20,19 +24,23 @@ tooltipMargin = 8px
       margin: 0px
       padding: 3px 5px
       width: 170px
-    a.ql-preview
+    a.ql-link-preview, a.ql-formula-preview
       display: inline-block
       max-width: 200px
       overflow-x: hidden
       text-overflow: ellipsis
       vertical-align: top
+    &:not([data-mode=formula-preview]) span.ql-formula-preview
+      display: none
+    &:not([data-mode=link-preview]) a.ql-link-preview
+      display: none
     a.ql-action::after
       border-right: 1px solid borderColor
-      content: 'Edit'
+      content: 'Изменить'
       margin-left: tooltipMargin*2
       padding-right: tooltipMargin
     a.ql-remove::before
-      content: 'Remove'
+      content: 'Удалить'
       margin-left: tooltipMargin
     a
       line-height: 26px
@@ -43,11 +51,5 @@ tooltipMargin = 8px
       display: inline-block
     a.ql-action::after
       border-right: 0px
-      content: 'Save'
+      content: 'Сохранить'
       padding-right: 0px
-  .ql-tooltip[data-mode=link]::before
-    content: "Enter link:"
-  .ql-tooltip[data-mode=formula]::before
-    content: "Enter formula:"
-  .ql-tooltip[data-mode=video]::before
-    content: "Enter video:"
