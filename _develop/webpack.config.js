@@ -132,9 +132,6 @@ const baseConfig = {
   context: path.resolve(__dirname, '..'),
   entry: {
     'quill.js': './quill.js',
-    // 'quill.core.js': ['./core.js'],
-    // 'quill.core': './assets/core.styl',
-    // 'quill.bubble': './assets/bubble.styl',
     'html': './assets/standalone.html',
     'quill.snow': './assets/snow.styl',
     'unit.js': './test/unit.js',
