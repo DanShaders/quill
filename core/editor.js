@@ -293,7 +293,10 @@ function convertHTML(blot, index, length, isRoot = false) {
     blot.children.forEachAt(index, length, (child, offset, childLength) => {
       parts.push(convertHTML(child, offset, childLength));
     });
-    if (isRoot || blot.statics.blotName === 'list') {
+    if (
+      (isRoot && blot.children.length !== 1) ||
+      blot.statics.blotName === 'list'
+    ) {
       return parts.join('');
     }
     const { outerHTML, innerHTML } = blot.domNode;

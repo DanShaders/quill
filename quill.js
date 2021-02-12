@@ -1,3 +1,5 @@
+import katex from 'katex';
+
 import Quill from './core';
 
 import { AlignClass, AlignStyle } from './formats/align';
@@ -107,5 +109,6 @@ Quill.register(
 );
 
 window.quill = Quill;
+window.katex = katex;
 
 export default Quill;
