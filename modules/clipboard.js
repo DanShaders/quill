@@ -137,6 +137,7 @@ class Clipboard extends Module {
     const { html, text } = this.onCopy(range, isCut);
     e.clipboardData.setData('text/plain', text);
     e.clipboardData.setData('text/html', html);
+    e.clipboardData.setData('meta/origin', 'quill');
     if (isCut) {
       deleteRange({ range, quill: this.quill });
     }
@@ -155,6 +156,7 @@ class Clipboard extends Module {
     } else {
       this.onPaste(range, { html, text });
     }
+    this.options.onPostPaste(e);
   }
 
   onCopy(range) {
@@ -209,6 +211,7 @@ class Clipboard extends Module {
 }
 Clipboard.DEFAULTS = {
   matchers: [],
+  onPostPaste: () => {},
 };
 
 function applyFormat(delta, format, value) {

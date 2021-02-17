@@ -266,6 +266,7 @@ function convertListHTML(items, lastIndent, types) {
   return `</li></${endTag}>${convertListHTML(items, lastIndent - 1, types)}`;
 }
 
+// eslint-disable-next-line no-unused-vars
 function convertHTML(blot, index, length, isRoot = false) {
   if (typeof blot.html === 'function') {
     return blot.html(index, length);
@@ -293,10 +294,7 @@ function convertHTML(blot, index, length, isRoot = false) {
     blot.children.forEachAt(index, length, (child, offset, childLength) => {
       parts.push(convertHTML(child, offset, childLength));
     });
-    if (
-      (isRoot && blot.children.length !== 1) ||
-      blot.statics.blotName === 'list'
-    ) {
+    if (blot.statics.blotName === 'list') {
       return parts.join('');
     }
     const { outerHTML, innerHTML } = blot.domNode;

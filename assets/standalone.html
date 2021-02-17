@@ -60,6 +60,11 @@
               }
             }
           },
+          clipboard: {
+            onPostPaste: (e) => {
+              console.log(e.clipboardData.getData("meta/origin"), "post paste");
+            }
+          }
         },
         placeholder: '',
         theme: 'snow',
